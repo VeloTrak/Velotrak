@@ -1,0 +1,71 @@
+# VeloTrak
+
+> Self-hosted ad tracker: clicks and conversions stay in your own PostgreSQL + ClickHouse. Flat price, never per click. CAPI on every plan, 90 MCP tools for AI agents. VeloTrak the ad tracker (https://velotrak.app/) is not the Timex Velo-Trak cycling watch.
+
+## Key facts
+- Category: self-hosted ad tracker for media buyers, affiliate marketers, and agencies (people also compare it with Voluum, RedTrack, Binom, BeMob, Keitaro, and FunnelFlux).
+- Stack: one statically linked Go binary for Linux (x86_64 or arm64) + PostgreSQL (config and conversion ledger) + ClickHouse (all clicks). The v1.0.0 GitHub Release ships `velotrak-linux-amd64` and `velotrak-linux-arm64`, plus `checksums.txt` and `manifest.json`. Install: `curl -fsSL https://velotrak.app/install.sh | sudo bash`. Minimum 2 vCPU / 4 GB, recommended 4 vCPU / 8 GB.
+- Performance: If licensing breaks, tracking keeps running. 30-day offline grace. The 3,071/s figure was load-tested on a shared 4-vCPU VM — app, PostgreSQL, ClickHouse and the load generator all on one box — with zero clicks lost (92,135 clicks in that run): about 265M clicks a day. The 2 vCPU / 4 GB floor is sized for at least 800 clicks/s (about 69M/day).
+- Data: clicks and conversions stay in the customer's own databases; telemetry is off by default; full export anytime. A license check sends only an install id, software version, plan, and license status.
+- Conversions API: All three platforms, every plan, one account per platform on Free. Meta: Purchase, Lead and other events — each result checkable. TikTok: Postbacks via the TikTok Events API. Google: Conversions sent via the GA4 Measurement Protocol. Binding priority: campaign > traffic source > broadcast.
+- MCP: 90 tools. AI can create landers, edit code, pull reports and adjust routing. Edits and deletes need a diff review first. Free is read-only. Pro is read/write.
+
+## Features
+- Campaign performance table: Spend, revenue and ROAS per campaign. Deletes go to Trash; pending revenue counted separately.
+- Reports: drill down, save views. Drill down, pick columns, views in the URL, global search. Dashboard auto-refresh is 30 seconds.
+- Flow routing, 25 fields: 25 condition fields — geo, device, time and more, with a summary per path.
+- Landers with a real code editor: Upload a ZIP or edit code in-browser with live preview.
+- Automatic cost allocation: Costs allocated every 30 minutes — ROAS after real costs. Pro adds automatic cost sync.
+- MCP: 90 tools AI or scripts can drive. Destructive actions need a diff review first.
+- Backup and restore: Full-table backups; single-transaction restore with row-count checks.
+- Your brand on it: Your logo and name, ZH/EN interface, telemetry off by default.
+- Templates: 30+ traffic sources and 25+ affiliate networks.
+
+## Pricing (USD)
+Annual billing is 12 months for the price of 10. Cancel anytime; the plan runs to the end of the paid period. A full refund is available within 14 days of purchase. The VPS is rented by the customer (about $10/month runs the floor tier) and is not part of the license.
+
+- Free — $0 forever: 3 active campaigns · 1 user · 1 install; Unmetered clicks · reports on the last 15 days (2 dimensions); CAPI free, all 3 platforms (1 account each); Import up to 20 campaigns at a time; MCP read-only · email alerts.
+- Pro — $49/month, or $490/year (shown as $41/month on the annual toggle): Unlimited campaigns · full report history · 5 dimensions; Unlimited CAPI accounts & imports · custom metrics; Automatic cost sync · alerts that auto-pause losing campaigns; MCP read/write (90 tools) · scheduled email reports; Telegram & webhook alerts · LP Protect · your branding; Up to 3 users (admins) · 1 install per seat, add seats anytime · email support.
+- Team — $99/month, or $990/year (shown as $83/month on the annual toggle): Everything in Pro, plus unlimited users with operator / viewer roles; audit log; API keys · one MCP token per teammate or agent; 3 installs per seat, add seats anytime · priority support.
+- Founder — $399 one-time, presale, 100 seats: All Pro features, for life · 1 install; 12 months of updates included; Founder listing & priority feedback channel.
+
+## FAQ
+### Is self-hosting a hassle? What server do I need?
+One install command (`curl -fsSL https://velotrak.app/install.sh | sudo bash`) sets up VeloTrak with PostgreSQL and ClickHouse. Minimum: 2 vCPU / 4 GB (floor tier, sized for ≥800 clicks/s — about 69M/day); recommended: 4 vCPU / 8 GB. A VPS from about $10/month runs the floor tier, and the five-step wizard needs no config-file editing.
+
+### If my server loses internet, or licensing breaks, does tracking stop?
+No. Licensing is separate from the click path, with a 30-day offline grace.
+
+### What does the free plan include, and where does it stop?
+Clicks are never metered on any plan. Free runs up to 3 active campaigns, reports on the last 15 days (older data is kept), and includes CAPI on all three platforms with 1 account each. When you hit a limit, the app shows exactly what Pro or Team unlocks — upgrade then.
+
+### I'm on another tracker. How painful is migration?
+Free imports up to 20 campaigns at a time — beyond 3 they land paused, so nothing is lost. Pro and above import without limits, with mappings built in.
+
+### Does any of my data reach VeloTrak's servers?
+No. Data stays in your own databases, telemetry is off by default, and full export is always available.
+
+### How should I read the performance figures?
+3,071 clicks/s was load-tested on a shared 4-vCPU VM: the app, PostgreSQL, ClickHouse and the load generator all ran on the same box, and 92,135 clicks were sent with zero lost — about 265M clicks a day.
+
+### What exactly is the $399 Founder lifetime plan?
+All Pro features for life on 1 install, with 12 months of updates included. Limited to 100.
+
+### Can I look before I commit?
+Yes. Open the live demo — the read-only account's email and password are already filled in, just click Sign in; reports and data are inside, no sign-up. Or run the free plan on real traffic. No card either way.
+
+### If I let an AI operate through MCP, could it mess things up?
+No. Deletes and edits need two-step confirmation: diff first, execute after you approve. Permissions are per area.
+
+## Links
+- Website (English): https://velotrak.app/
+- Website (中文): https://velotrak.app/zh/
+- Pricing: https://velotrak.app/#pricing
+- Live demo (read-only, no sign-up): https://demo.velotrak.app/admin/#email=demo%40velotrak.app&password=admin123
+- Buy and manage licenses: https://velotrak.app/license/
+- Privacy: https://velotrak.app/privacy/
+- Terms: https://velotrak.app/terms/
+- Product llms.txt on the website: https://velotrak.app/llms.txt
+- GitHub repository: https://github.com/VeloTrak/Velotrak
+- GitHub releases: https://github.com/VeloTrak/Velotrak/releases
+- Contact: support@velotrak.app
